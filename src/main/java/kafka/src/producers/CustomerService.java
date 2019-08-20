@@ -11,8 +11,8 @@ public class CustomerService {
     public static CustomerService INSTANCE = null;
     public static final AtomicBoolean LOCK = new AtomicBoolean();
 
-    private String originValues[] = {"US", "UK", "INDIA", "PAK", "CHINA", "JAP", "RUSSIAN", "AUSTRALIAN", "SRILANKAN", "IRAQI", "CANADIAN", "NEWZELAND", "GERMAN", "ITALIAN", "TURKISH", "UKRAINIAN"};
-    private String brandValues[] = {"MCD", "SAMSUNG", "SWIGGY", "APPLE", "MSFT", "AT&T", "BURGRE-KING", "BERGER-FY"};
+    private String[] originValues = {"US", "UK", "INDIA", "PAK", "CHINA", "JAP", "RUSSIAN", "AUSTRALIAN", "SRILANKAN", "IRAQI", "CANADIAN", "NEWZELAND", "GERMAN", "ITALIAN", "TURKISH", "UKRAINIAN"};
+    private String[] brandValues = {"MCD", "SAMSUNG", "SWIGGY", "APPLE", "MSFT", "AT&T", "BURGRE-KING", "BERGER-FY"};
 
     public static CustomerService getInstance() {
         if (null == INSTANCE) {
@@ -29,12 +29,12 @@ public class CustomerService {
         Customer customer = new Customer();
         customer.setId(UUID.randomUUID().toString());
         customer.setCreation_time(System.currentTimeMillis());
-        customer.setBrand(getRandomValue(originValues));
-        customer.setOrigin(getRandomValue(brandValues));
+        customer.setBrand(getRandomValue(brandValues));
+        customer.setOrigin(getRandomValue(originValues));
         return customer;
     }
 
-    private String getRandomValue(String arr[]) {
+    private String getRandomValue(String[] arr) {
         int length = arr.length;
         int randomNumber = getRandomNumber(length);
         return originValues[randomNumber];

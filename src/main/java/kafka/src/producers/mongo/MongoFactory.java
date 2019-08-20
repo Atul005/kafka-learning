@@ -14,15 +14,15 @@ public class MongoFactory {
     }
 
     private static MongoClient getSingletonMongoInstance() {
-        if(null != mongoClient){
+        if(null == mongoClient){
             synchronized (MongoFactory.class){
-                if(null != mongoClient){
+                if(null == mongoClient){
                     mongoClient = new MongoClient();
                     System.out.println("Connected to "+mongoClient.getConnectPoint());
                 }
             }
         }
-        return null;
+        return mongoClient;
     }
 
 }

@@ -11,6 +11,7 @@ public class KafkaOps {
 
     private static KafkaOps INSTANCE = null;
     private static final AtomicBoolean LOCK = new AtomicBoolean();
+    private static final ProducerService instance = ProducerServiceImpl.getInstance();
 
     public static KafkaOps getInstance() {
         if (null == INSTANCE) {
@@ -25,20 +26,14 @@ public class KafkaOps {
 
     public void handleOnCompletionCallback(String id, RecordMetadata metadata, Exception exception) {
         RecordWrittenResponse recordWrittenResponse = new RecordWrittenResponse();
+        recordWrittenResponse.setId(id);
         recordWrittenResponse.setException(exception);
         recordWrittenResponse.setHasOffset(metadata.hasOffset());
         recordWrittenResponse.setOffset(metadata.offset());
         recordWrittenResponse.setPartition(metadata.partition());
         recordWrittenResponse.setTimeStamp(metadata.timestamp());
         recordWrittenResponse.setTopic(metadata.topic());
-        Boolean success = InMemoryDatabase.getInstance().storeRecordResponse(id, recordWrittenResponse);
-        ProducerServiceImpl.INSTANCE.saveRecordWrittenResponseFromBroker(recordWrittenResponse);
-        if (success) {
-            System.out.println("Processed Document stored in InMemoryDatabase, Response from Kafka " + recordWrittenResponse);
-        } else {
-            System.out.println("failed storing in InMemoryDatabase");
-        }
-
+        instance.saveRecordWrittenResponseFromBroker(recordWrittenResponse);
     }
 
 }
