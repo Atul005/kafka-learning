@@ -5,6 +5,7 @@ package kafka.src.producers;
 
 public class RecordWrittenResponse {
 
+    private String id;
     private Boolean hasOffset;
     private Long offset;
     private Integer partition;
@@ -61,10 +62,19 @@ public class RecordWrittenResponse {
         this.exception = exception;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "RecordWrittenResponse{" +
-                "hasOffset=" + hasOffset +
+                "id='" + id + '\'' +
+                ", hasOffset=" + hasOffset +
                 ", offset=" + offset +
                 ", partition=" + partition +
                 ", topic='" + topic + '\'' +

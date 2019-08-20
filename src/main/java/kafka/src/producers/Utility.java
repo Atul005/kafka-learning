@@ -4,10 +4,17 @@ package kafka.src.producers;
  */
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class Utility {
+
+    private static final Gson gson = new Gson();
+
     public static String getJsonForObject(Object o) {
-        Gson gson = new Gson();
         return gson.toJson(o);
+    }
+
+    public static Object getObjectFromJson(String json, Class klass){
+        return gson.fromJson(json, klass);
     }
 }

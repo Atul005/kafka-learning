@@ -9,9 +9,7 @@ import java.util.List;
  */
 public interface ProducerService {
 
-    ProducerService getInstance();
-
     void saveRecordWrittenResponseFromBroker(RecordWrittenResponse recordWrittenResponse);
-    
+
     List<RecordWrittenResponse> getRecordResponse();
 }

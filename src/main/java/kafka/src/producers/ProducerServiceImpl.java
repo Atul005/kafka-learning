@@ -4,12 +4,11 @@ package kafka.src.producers;
  */
 
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import kafka.src.producers.mongo.MongoFactory;
+import kafka.src.producers.mongo.MongoService;
+import kafka.src.producers.mongo.MongoServiceImpl;
 import org.bson.Document;
 
 import java.util.List;
@@ -20,21 +19,16 @@ public class ProducerServiceImpl implements ProducerService {
     private static final MongoClient mongoClient = MongoFactory.getMongoConnection();
     private static final String DATABASE = "kafkaProject";
     private static final String RECORD_WRITTEN_RESPONSE = "recordWrittenResponse";
-    private static final String PROCESSED_WRITTEN_RECORDS = "processedWrittenRecords";
+    private static final MongoService mongoService = MongoServiceImpl.getMongoServiceInstance();
 
-    @Override
-    public ProducerService getInstance() {
+
+    public static ProducerService getInstance() {
         return INSTANCE;
     }
 
     @Override
     public void saveRecordWrittenResponseFromBroker(RecordWrittenResponse recordWrittenResponse) {
-        MongoDatabase kafkaProject = mongoClient.getDatabase(DATABASE);
-//        kafkaProject.createCollection("recordWrittenResponse");
-        Document document = Document.parse(Utility.getJsonForObject(recordWrittenResponse));
-        MongoCollection<Document> collection = kafkaProject.getCollection(RECORD_WRITTEN_RESPONSE);
-        collection.insertOne(document);
-        System.out.println("Document inserted");
+        mongoService.insertDocument(DATABASE, RECORD_WRITTEN_RESPONSE, recordWrittenResponse);
     }
 
     @Override
